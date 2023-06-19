@@ -3,7 +3,9 @@ package com.sell.tea.controllers;
 import com.sell.tea.dtos.auth.RegisterRequest;
 import com.sell.tea.entities.UserEntity;
 import com.sell.tea.services.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public boolean register(@RequestBody RegisterRequest registerRequest){
-        return authService.register(registerRequest);
+    public ResponseEntity<RegisterRequest> register(@Valid @RequestBody RegisterRequest registerRequest){
+        return ResponseEntity.ok(authService.register(registerRequest));
     }
 }
