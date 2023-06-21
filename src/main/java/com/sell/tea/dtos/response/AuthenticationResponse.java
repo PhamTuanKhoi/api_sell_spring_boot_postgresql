@@ -9,4 +9,8 @@ import lombok.Setter;
 public class AuthenticationResponse {
     @JsonProperty("access_token")
     private String accessToken;
+
+    private Long id;
+    private String email;
+    private String avatar;
 }

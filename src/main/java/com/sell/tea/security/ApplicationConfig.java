@@ -1,8 +1,6 @@
 package com.sell.tea.security;
 
-import com.sell.tea.entities.UserEntity;
 import com.sell.tea.repositories.UserRepository;
-import com.sell.tea.security.impl.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,24 +18,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
     private final UserRepository userRepository;
+
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                UserEntity user =  userRepository.findByEmail(username)
+                return userRepository.findByEmail(username)
                         .orElseThrow(() -> new UsernameNotFoundException("user not found!"));
-                return new UserDetailsImpl(user);
             }
         };
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService());
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        return  daoAuthenticationProvider;
+        return daoAuthenticationProvider;
     }
 
     @Bean
