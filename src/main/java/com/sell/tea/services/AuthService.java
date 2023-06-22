@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -28,6 +25,7 @@ public class AuthService {
     private final UserEntityAndUserResponseDtoMapper userEntityAndUserResponseDtoMapper;
     private final JwtService jwtService;
     private final ModelMapper modelMapper;
+    private final AuthenticationManager authenticationManager;
 
 
     public RegisterRequest register(RegisterRequest registerRequest) {
@@ -40,24 +38,21 @@ public class AuthService {
 
 
     public AuthenticationResponse login(LoginRequest loginRequest) {
-            UsernamePasswordAuthenticationToken
-                    authenticationToken = new UsernamePasswordAuthenticationToken(
-                    loginRequest.getEmail(),
-                    loginRequest.getPassword()
-            );
+        var authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getEmail(),
+                        loginRequest.getPassword()
+                )
+        );
 
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-            UserDetails userDetails = userRepository.findByEmail((String) authenticationToken.getPrincipal())
-                    .orElseThrow(() -> new UsernameNotFoundException("email not found"));
+        String token = jwtService.generateToken(userDetails);
 
-            String token = jwtService.generateToken(userDetails);
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+        modelMapper.map(userDetails, authenticationResponse);
+        authenticationResponse.setAccessToken(token);
 
-            AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-
-            modelMapper.map(userDetails, authenticationResponse);
-            authenticationResponse.setAccessToken(token);
-
-            return authenticationResponse;
+        return authenticationResponse;
     }
 }
