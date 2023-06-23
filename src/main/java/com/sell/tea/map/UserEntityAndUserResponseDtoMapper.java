@@ -1,6 +1,7 @@
 package com.sell.tea.map;
 
 import com.sell.tea.dtos.request.auth.RegisterRequest;
+import com.sell.tea.entities.Role;
 import com.sell.tea.entities.UserEntity;
 import com.sell.tea.exceptions.DataConstraintConflictException;
 import com.sell.tea.repositories.UserRepository;
@@ -17,7 +18,7 @@ public class UserEntityAndUserResponseDtoMapper {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public void map(RegisterRequest registerRequest, UserEntity userEntity) {
         Boolean nameUser = this.userRepository.existsByName(registerRequest.getName());
@@ -30,5 +31,6 @@ public class UserEntityAndUserResponseDtoMapper {
 
         modelMapper.map(registerRequest, userEntity);
         userEntity.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        userEntity.setRole(Role.USER);
     }
 }

@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @GetMapping
     public String findAll(){
-        return "hello girl";
+        return "hello admin";
+    }
+
+    @GetMapping("/role")
+    public String role(){
+        return "hello user";
     }
 }
