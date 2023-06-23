@@ -1,7 +1,7 @@
 package com.sell.tea.map;
 
 import com.sell.tea.dtos.request.auth.RegisterRequest;
-import com.sell.tea.entities.Role;
+import com.sell.tea.entities.enums.Role;
 import com.sell.tea.entities.UserEntity;
 import com.sell.tea.exceptions.DataConstraintConflictException;
 import com.sell.tea.repositories.UserRepository;

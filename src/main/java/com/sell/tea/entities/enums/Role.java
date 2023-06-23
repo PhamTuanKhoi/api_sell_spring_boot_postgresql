@@ -1,4 +1,4 @@
-package com.sell.tea.entities;
+package com.sell.tea.entities.enums;
 
 public enum Role {
     USER,

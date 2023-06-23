@@ -1,6 +1,7 @@
 package com.sell.tea.entities;
 
 
+import com.sell.tea.entities.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
