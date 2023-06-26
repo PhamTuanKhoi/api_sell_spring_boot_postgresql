@@ -43,7 +43,7 @@ public class JwtService {
 
     public Boolean validateToken(String token){
         try {
-            Jwts.parser().setSigningKey(token).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(getSignInKey()).parseClaimsJws(token);
             return true;
         }catch (MalformedJwtException ex) {
             log.error("Invalid JWT token");
