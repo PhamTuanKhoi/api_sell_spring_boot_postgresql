@@ -4,7 +4,7 @@ import com.sell.tea.dtos.request.auth.LoginRequest;
 import com.sell.tea.dtos.request.auth.RegisterRequest;
 import com.sell.tea.dtos.response.AuthenticationResponse;
 import com.sell.tea.entities.UserEntity;
-import com.sell.tea.map.UserEntityAndUserResponseDtoMapper;
+import com.sell.tea.map.UserEntityAndUserRequestDtoMapper;
 import com.sell.tea.repositories.UserRepository;
 import com.sell.tea.security.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final UserEntityAndUserResponseDtoMapper userEntityAndUserResponseDtoMapper;
+    private final UserEntityAndUserRequestDtoMapper userEntityAndUserResponseDtoMapper;
     private final JwtService jwtService;
     private final ModelMapper modelMapper;
     private final AuthenticationManager authenticationManager;

@@ -1,8 +1,11 @@
 package com.sell.tea.services;
 
+import com.sell.tea.dtos.request.user.UpdateUserDto;
 import com.sell.tea.dtos.response.ListEntityResponse;
 import com.sell.tea.dtos.response.UserResponseDto;
 import com.sell.tea.entities.UserEntity;
+import com.sell.tea.exceptions.ResourceNotFoundException;
+import com.sell.tea.map.UserEntityAndUserRequestDtoMapper;
 import com.sell.tea.repositories.UserRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +25,10 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final UserEntityAndUserRequestDtoMapper userEntityAndUserRequestDtoMapper;
 
-    public Optional<UserEntity> findById(String id) {
-        return this.userRepository.findByName(id);
+    public Optional<UserEntity> findById(Long id) {
+        return this.userRepository.findById(id);
     }
 
     public Optional<UserEntity> findByName(String name) {
@@ -46,7 +50,7 @@ public class UserService {
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
-//        paging
+//        paging sort
         PageRequest pageRequest = null;
         if (sortBy != null && sortType != null && page != null && limit != null) {
             Sort.Direction direction = sortType.equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
@@ -63,12 +67,23 @@ public class UserService {
 //        map data
         UserResponseDto userResponseDto = new UserResponseDto();
         List<UserResponseDto> entities = new ArrayList<>();
-         entityPage.getContent().forEach(item -> {
+        entityPage.getContent().forEach(item -> {
             modelMapper.map(item, userResponseDto);
             entities.add(userResponseDto);
         });
         Long count = entityPage.getTotalElements();
 
         return new ListEntityResponse<UserResponseDto>(entities, count, limit, page);
+    }
+
+    public UserEntity update(Integer id, UpdateUserDto updateUserDto) {
+     UserEntity user = this.isEntityExist(id);
+     userEntityAndUserRequestDtoMapper.map(updateUserDto, user);
+     return userRepository.save(user);
+    }
+
+    public UserEntity isEntityExist(Integer id) {
+        return this.findById(Long.valueOf(id))
+                .orElseThrow(() -> new ResourceNotFoundException("user not found by id"));
     }
 }
