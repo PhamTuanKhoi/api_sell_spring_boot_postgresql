@@ -3,6 +3,7 @@ package com.sell.tea.controllers;
 import com.sell.tea.dtos.request.auth.RegisterRequest;
 import com.sell.tea.dtos.request.auth.LoginRequest;
 import com.sell.tea.dtos.response.AuthenticationResponse;
+import com.sell.tea.dtos.response.UserResponseDto;
 import com.sell.tea.entities.UserEntity;
 import com.sell.tea.services.AuthService;
 import jakarta.validation.Valid;
@@ -22,7 +23,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterRequest> register(@Valid @RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<UserResponseDto> register(@Valid @RequestBody RegisterRequest registerRequest){
         return ResponseEntity.ok(authService.register(registerRequest));
     }
 

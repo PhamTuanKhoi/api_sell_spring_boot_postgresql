@@ -36,13 +36,13 @@ public class UserEntityAndUserRequestDtoMapper {
     }
 
     public void map(UpdateUserDto updateUserDto, UserEntity userEntity) {
-        if (updateUserDto.getName() != updateUserDto.getNameOld()) {
+        if (!updateUserDto.getName().equals(updateUserDto.getNameOld())) {
             Boolean existsByName = userRepository.existsByName(updateUserDto.getName());
             if (existsByName)
                 throw new DataConstraintConflictException("name user is already exists");
         }
 
-        if (updateUserDto.getEmail() != updateUserDto.getEmailOld()) {
+        if (!updateUserDto.getEmail().equals(updateUserDto.getEmailOld())) {
             Boolean existsByEmail = userRepository.existsByEmail(updateUserDto.getEmail());
             if (existsByEmail)
                 throw new DataConstraintConflictException("email user is already exists");

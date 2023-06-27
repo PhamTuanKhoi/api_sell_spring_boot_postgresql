@@ -4,11 +4,13 @@ import com.sell.tea.dtos.request.user.UpdateUserDto;
 import com.sell.tea.dtos.response.ListEntityResponse;
 import com.sell.tea.dtos.response.UserResponseDto;
 import com.sell.tea.entities.UserEntity;
+import com.sell.tea.exceptions.CatchException;
 import com.sell.tea.exceptions.ResourceNotFoundException;
 import com.sell.tea.map.UserEntityAndUserRequestDtoMapper;
 import com.sell.tea.repositories.UserRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +24,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
@@ -65,25 +68,49 @@ public class UserService {
 
         Page entityPage = userRepository.findAll(specification, pageRequest);
 //        map data
-        UserResponseDto userResponseDto = new UserResponseDto();
+
         List<UserResponseDto> entities = new ArrayList<>();
         entityPage.getContent().forEach(item -> {
-            modelMapper.map(item, userResponseDto);
+            UserResponseDto userResponseDto = modelMapper.map(item, UserResponseDto.class);
             entities.add(userResponseDto);
         });
+
         Long count = entityPage.getTotalElements();
 
         return new ListEntityResponse<UserResponseDto>(entities, count, limit, page);
     }
 
-    public UserEntity update(Integer id, UpdateUserDto updateUserDto) {
-     UserEntity user = this.isEntityExist(id);
-     userEntityAndUserRequestDtoMapper.map(updateUserDto, user);
-     return userRepository.save(user);
+    public UserResponseDto update(Long id, UpdateUserDto updateUserDto) {
+        UserEntity user = this.isEntityExist(id);
+        userEntityAndUserRequestDtoMapper.map(updateUserDto, user);
+
+        try {
+            UserEntity saved = userRepository.save(user);
+            log.info("updated a user by id#" + saved.getId());
+
+            UserResponseDto userResponseDto = new UserResponseDto();
+            modelMapper.map(saved, userResponseDto);
+
+            return userResponseDto;
+        } catch (Exception ex) {
+            throw new CatchException(ex.getMessage());
+        }
     }
 
-    public UserEntity isEntityExist(Integer id) {
-        return this.findById(Long.valueOf(id))
-                .orElseThrow(() -> new ResourceNotFoundException("user not found by id"));
+    public UserResponseDto delete(Long id) {
+        UserEntity user = this.isEntityExist(id);
+        try {
+            userRepository.deleteById(id);
+            log.info("deleted a user by id#" + user.getId());
+            UserResponseDto userResponseDto = modelMapper.map(user, UserResponseDto.class);
+            return userResponseDto;
+        } catch (Exception ex) {
+            throw new CatchException(ex.getMessage());
+        }
+    }
+
+    public UserEntity isEntityExist(Long id) {
+        return this.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("user not found by id#" + id));
     }
 }

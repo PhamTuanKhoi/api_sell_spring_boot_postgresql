@@ -3,7 +3,9 @@ package com.sell.tea.services;
 import com.sell.tea.dtos.request.auth.LoginRequest;
 import com.sell.tea.dtos.request.auth.RegisterRequest;
 import com.sell.tea.dtos.response.AuthenticationResponse;
+import com.sell.tea.dtos.response.UserResponseDto;
 import com.sell.tea.entities.UserEntity;
+import com.sell.tea.exceptions.CatchException;
 import com.sell.tea.map.UserEntityAndUserRequestDtoMapper;
 import com.sell.tea.repositories.UserRepository;
 import com.sell.tea.security.JwtService;
@@ -27,12 +29,19 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
 
-    public RegisterRequest register(RegisterRequest registerRequest) {
+    public UserResponseDto register(RegisterRequest registerRequest) {
         UserEntity user = new UserEntity();
         userEntityAndUserResponseDtoMapper.map(registerRequest, user);
 
-        userRepository.save(user);
-        return registerRequest;
+        try {
+            UserEntity saved = this.userRepository.save(user);
+            log.info("register a new user by id" + saved.getId());
+
+            UserResponseDto userResponseDto = modelMapper.map(saved, UserResponseDto.class);
+            return userResponseDto;
+        } catch (Exception ex) {
+            throw new CatchException(ex.getMessage());
+        }
     }
 
 
@@ -48,8 +57,8 @@ public class AuthService {
 
         String token = jwtService.generateToken(userDetails);
 
-        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-        modelMapper.map(userDetails, authenticationResponse);
+        AuthenticationResponse authenticationResponse =
+                modelMapper.map(userDetails, AuthenticationResponse.class);
         authenticationResponse.setAccessToken(token);
 
         return authenticationResponse;
