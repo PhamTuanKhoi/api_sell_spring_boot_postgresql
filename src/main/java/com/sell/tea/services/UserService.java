@@ -81,7 +81,7 @@ public class UserService {
     }
 
     public UserResponseDto update(Long id, UpdateUserDto updateUserDto) {
-        UserEntity user = this.isEntityExist(id);
+        UserEntity user = this.isEntityExists(id);
         userEntityAndUserRequestDtoMapper.map(updateUserDto, user);
 
         try {
@@ -98,7 +98,7 @@ public class UserService {
     }
 
     public UserResponseDto delete(Long id) {
-        UserEntity user = this.isEntityExist(id);
+        UserEntity user = this.isEntityExists(id);
         try {
             userRepository.deleteById(id);
             log.info("deleted a user by id#" + user.getId());
@@ -109,7 +109,7 @@ public class UserService {
         }
     }
 
-    public UserEntity isEntityExist(Long id) {
+    public UserEntity isEntityExists(Long id) {
         return this.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("user not found by id#" + id));
     }
