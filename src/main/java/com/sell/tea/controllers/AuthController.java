@@ -4,22 +4,18 @@ import com.sell.tea.dtos.request.auth.RegisterRequest;
 import com.sell.tea.dtos.request.auth.LoginRequest;
 import com.sell.tea.dtos.response.AuthenticationResponse;
 import com.sell.tea.dtos.response.UserResponseDto;
-import com.sell.tea.entities.UserEntity;
-import com.sell.tea.services.AuthService;
+import com.sell.tea.services.impl.AuthServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+    private final AuthServiceImpl authService;
 
 
     @PostMapping("/register")

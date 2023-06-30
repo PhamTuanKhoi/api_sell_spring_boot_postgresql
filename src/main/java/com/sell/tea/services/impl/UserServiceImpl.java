@@ -9,6 +9,7 @@ import com.sell.tea.exceptions.ResourceNotFoundException;
 import com.sell.tea.map.UserEntityAndUserRequestDtoMapper;
 import com.sell.tea.repositories.UserRepository;
 import com.sell.tea.repositories.specification.UserSpecification;
+import com.sell.tea.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -24,15 +25,19 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final UserEntityAndUserRequestDtoMapper userEntityAndUserRequestDtoMapper;
 
+
+    @Override
     public Optional<UserEntity> findById(Long id) {
         return this.userRepository.findById(id);
     }
 
+
+    @Override
     public ListEntityResponse<UserResponseDto> findAll(String name, Integer page, Integer limit, String sortBy, String sortType) {
 
 //        paging sort
@@ -62,6 +67,8 @@ public class UserServiceImpl {
         return new ListEntityResponse<UserResponseDto>(entities, count, limit, page);
     }
 
+
+    @Override
     public UserResponseDto update(Long id, UpdateUserDto updateUserDto) {
         UserEntity user = this.isEntityExists(id);
         userEntityAndUserRequestDtoMapper.map(updateUserDto, user);
@@ -79,6 +86,8 @@ public class UserServiceImpl {
         }
     }
 
+
+    @Override
     public UserResponseDto delete(Long id) {
         UserEntity user = this.isEntityExists(id);
         try {
@@ -91,6 +100,8 @@ public class UserServiceImpl {
         }
     }
 
+
+    @Override
     public UserEntity isEntityExists(Long id) {
         return this.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("user not found by id#" + id));

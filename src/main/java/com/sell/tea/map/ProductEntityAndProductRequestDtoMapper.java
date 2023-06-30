@@ -5,7 +5,7 @@ import com.sell.tea.entities.CategoryEntity;
 import com.sell.tea.entities.ProductEntity;
 import com.sell.tea.exceptions.DataConstraintConflictException;
 import com.sell.tea.repositories.ProductRepository;
-import com.sell.tea.services.CategoryService;
+import com.sell.tea.services.impl.CategoryServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class ProductEntityAndProductRequestDtoMapper {
 
     private final ProductRepository productRepository;
-    private final CategoryService categoryService;
+    private final CategoryServiceImpl categoryService;
     private final ModelMapper modelMapper;
 
     public void map(CreateProductDto createProductDto, ProductEntity productEntity){

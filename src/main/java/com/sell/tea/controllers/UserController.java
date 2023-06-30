@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserServiceImpl userService;
-    private final UserRepository userRepository;
 
     @GetMapping
     public ListEntityResponse<UserResponseDto> findAll(
