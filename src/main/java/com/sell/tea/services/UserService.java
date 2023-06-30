@@ -8,6 +8,7 @@ import com.sell.tea.exceptions.CatchException;
 import com.sell.tea.exceptions.ResourceNotFoundException;
 import com.sell.tea.map.UserEntityAndUserRequestDtoMapper;
 import com.sell.tea.repositories.UserRepository;
+import com.sell.tea.repositories.specification.UserSpecification;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,16 +44,7 @@ public class UserService {
     }
 
     public ListEntityResponse<UserResponseDto> findAll(String name, Integer page, Integer limit, String sortBy, String sortType) {
-//        filter query
-        Specification<UserEntity> specification = (root, query, criteriaBuilder) -> {
-            List<Predicate> predicates = new ArrayList<>();
 
-            if ((name != null) && !(name.isEmpty()))
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")),
-                        "%" + name.toLowerCase() + "%"));
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        };
 //        paging sort
         PageRequest pageRequest = null;
         if (sortBy != null && sortType != null && page != null && limit != null) {
@@ -66,9 +58,9 @@ public class UserService {
         if (sortBy == null && sortType == null && page == null && limit == null)
             pageRequest = PageRequest.ofSize(userRepository.findAll().size());
 
-        Page entityPage = userRepository.findAll(specification, pageRequest);
+//        query
+        Page entityPage = userRepository.findAll(UserSpecification.filter(name), pageRequest);
 //        map data
-
         List<UserResponseDto> entities = new ArrayList<>();
         entityPage.getContent().forEach(item -> {
             UserResponseDto userResponseDto = modelMapper.map(item, UserResponseDto.class);
