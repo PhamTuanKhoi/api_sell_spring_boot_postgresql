@@ -1,7 +1,7 @@
 package com.sell.tea.controllers;
 
 
-import com.sell.tea.dtos.CreateProductDto;
+import com.sell.tea.dtos.request.product.CreateProductDto;
 import com.sell.tea.dtos.response.ListEntityResponse;
 import com.sell.tea.entities.ProductEntity;
 import com.sell.tea.services.impl.ProductServiceImpl;

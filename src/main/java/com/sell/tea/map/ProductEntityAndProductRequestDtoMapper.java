@@ -1,6 +1,6 @@
 package com.sell.tea.map;
 
-import com.sell.tea.dtos.CreateProductDto;
+import com.sell.tea.dtos.request.product.CreateProductDto;
 import com.sell.tea.entities.CategoryEntity;
 import com.sell.tea.entities.ProductEntity;
 import com.sell.tea.exceptions.DataConstraintConflictException;

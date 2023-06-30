@@ -1,6 +1,6 @@
 package com.sell.tea.controllers;
 
-import com.sell.tea.dtos.request.CreateCategoryDto;
+import com.sell.tea.dtos.request.category.CreateCategoryDto;
 import com.sell.tea.entities.CategoryEntity;
 import com.sell.tea.services.impl.CategoryServiceImpl;
 import jakarta.validation.Valid;

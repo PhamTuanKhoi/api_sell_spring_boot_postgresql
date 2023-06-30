@@ -1,6 +1,6 @@
 package com.sell.tea.map;
 
-import com.sell.tea.dtos.request.CreateCategoryDto;
+import com.sell.tea.dtos.request.category.CreateCategoryDto;
 import com.sell.tea.entities.CategoryEntity;
 import com.sell.tea.exceptions.DataConstraintConflictException;
 import com.sell.tea.repositories.CategoryRepository;

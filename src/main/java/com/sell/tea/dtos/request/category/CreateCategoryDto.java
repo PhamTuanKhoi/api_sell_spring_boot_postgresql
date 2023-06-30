@@ -1,4 +1,4 @@
-package com.sell.tea.dtos.request;
+package com.sell.tea.dtos.request.category;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.sell.tea.services.impl;
 
-import com.sell.tea.dtos.request.CreateCategoryDto;
+import com.sell.tea.dtos.request.category.CreateCategoryDto;
 import com.sell.tea.entities.CategoryEntity;
 import com.sell.tea.exceptions.CatchException;
 import com.sell.tea.exceptions.ResourceNotFoundException;

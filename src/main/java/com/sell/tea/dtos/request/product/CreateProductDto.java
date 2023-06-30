@@ -1,4 +1,4 @@
-package com.sell.tea.dtos;
+package com.sell.tea.dtos.request.product;
 
 import com.sell.tea.entities.CategoryEntity;
 import jakarta.validation.constraints.NotBlank;
