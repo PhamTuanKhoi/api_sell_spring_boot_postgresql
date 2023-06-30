@@ -26,5 +26,6 @@ public class ProductEntityAndProductRequestDtoMapper {
         CategoryEntity category = this.categoryService.isEntityExists(createProductDto.getCategoryId());
 
         modelMapper.map(createProductDto, productEntity);
+        productEntity.setCategory(category);
     }
 }

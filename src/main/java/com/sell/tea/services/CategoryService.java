@@ -8,8 +8,10 @@ import com.sell.tea.map.CategoryEntityAndCategoryRequestDtoMapper;
 import com.sell.tea.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,28 +22,33 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     private final CategoryEntityAndCategoryRequestDtoMapper categoryEntityAndCategoryRequestDtoMapper;
+    private final ModelMapper modelMapper;
 
 
-    public Optional<CategoryEntity> findById(Long id){
+    public Optional<CategoryEntity> findById(Long id) {
         return this.categoryRepository.findById(id);
     }
 
+    public List<CategoryEntity> findAll(String search) {
+        return this.categoryRepository.findByCategorySearchName(search);
+    }
 
-    public CategoryEntity create(CreateCategoryDto createCategoryDto){
+
+    public CategoryEntity create(CreateCategoryDto createCategoryDto) {
         CategoryEntity category = new CategoryEntity();
         categoryEntityAndCategoryRequestDtoMapper.map(createCategoryDto, category);
 
-        try{
+        try {
             CategoryEntity saved = this.categoryRepository.save(category);
-            log.info("created a new category by id#"+saved.getId());
+            log.info("created a new category by id#" + saved.getId());
             return saved;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new CatchException(ex.getMessage());
         }
     }
 
 
-    public CategoryEntity isEntityExists(Long id){
+    public CategoryEntity isEntityExists(Long id) {
         return this.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("category not found by id#" + id));
     }
