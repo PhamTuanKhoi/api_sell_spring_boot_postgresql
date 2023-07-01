@@ -33,7 +33,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryEntity> findAll(String search) {
-        return this.categoryRepository.findByCategorySearchName(search);
+        return this.categoryRepository.findByCategorySearchName(
+                search == null ? "" : search
+        );
     }
 
 

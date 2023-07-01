@@ -1,6 +1,6 @@
 package com.sell.tea.dtos.request.user;
 
-import com.sell.tea.dtos.gobal.QueryDto;
+import com.sell.tea.dtos.gobal.dtos.QueryDto;
 import lombok.Getter;
 import lombok.Setter;
 

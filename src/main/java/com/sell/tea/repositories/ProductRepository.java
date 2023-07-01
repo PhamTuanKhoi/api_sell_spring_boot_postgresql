@@ -2,8 +2,9 @@ package com.sell.tea.repositories;
 
 import com.sell.tea.entities.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
+public interface ProductRepository extends JpaRepository<ProductEntity, Long>, JpaSpecificationExecutor {
 
     boolean existsByName(String name);
 }

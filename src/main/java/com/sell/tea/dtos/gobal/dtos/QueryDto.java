@@ -1,5 +1,6 @@
-package com.sell.tea.dtos.gobal;
+package com.sell.tea.dtos.gobal.dtos;
 
+import com.sell.tea.dtos.gobal.types.SortType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,12 +8,8 @@ import lombok.Setter;
 @Setter
 public class QueryDto {
     private Integer page;
-    private Integer limit;
+    private Integer limit = 10;
     private String sortBy;
     private SortType sortType;
 }
 
- enum SortType {
-    ASC,
-    DESC
-}
