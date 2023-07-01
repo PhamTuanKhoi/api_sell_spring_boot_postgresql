@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
         Integer page = query.getPage();
         int pageNumber = (page == null || page < 0) ? 0 : page - 1;
        try{
-           SortFilter sortFilter = new SortFilter(query.getSortBy(), query.getSortType());
+           SortFilter sortFilter = new SortFilter(query.getSortBy(), query.getSortType().name());
            PageRequest pageRequest = PageRequest.of(pageNumber, query.getLimit(), sortFilter.getSortType());
 
            Page<ProductEntity> productEntities  = this.productRepository.findAll(
