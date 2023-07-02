@@ -11,6 +11,8 @@ public interface UserService {
 
     Optional<UserEntity> findById(Long id);
 
+    UserEntity findByEmail(String email);
+
     ListEntityResponse<UserResponseDto> findAll(String name, Integer page,
                                                 Integer limit, String sortBy, String sortType);
 

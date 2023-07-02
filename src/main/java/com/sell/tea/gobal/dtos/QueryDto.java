@@ -1,6 +1,6 @@
-package com.sell.tea.dtos.gobal.dtos;
+package com.sell.tea.gobal.dtos;
 
-import com.sell.tea.dtos.gobal.types.SortType;
+import com.sell.tea.gobal.types.SortType;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,4 +1,4 @@
-package com.sell.tea.dtos.gobal.types;
+package com.sell.tea.gobal.types;
 
 import org.springframework.data.domain.Sort;
 
@@ -12,7 +12,7 @@ public class SortFilter {
     }
 
     public Sort getSortType() {
-        if(sortType == null || sortBy == null)
+        if(sortType == null && sortBy == null)
             return Sort.by("id").descending();
 
         switch (sortType) {

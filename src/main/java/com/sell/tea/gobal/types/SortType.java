@@ -1,4 +1,4 @@
-package com.sell.tea.dtos.gobal.types;
+package com.sell.tea.gobal.types;
 public enum SortType {
     ASC,
     DESC

@@ -1,6 +1,6 @@
 package com.sell.tea.services.impl;
 
-import com.sell.tea.dtos.gobal.types.SortFilter;
+import com.sell.tea.gobal.types.SortFilter;
 import com.sell.tea.dtos.request.product.CreateProductDto;
 import com.sell.tea.dtos.request.product.QueryProductDto;
 import com.sell.tea.dtos.response.ListEntityResponse;
@@ -14,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +31,8 @@ public class ProductServiceImpl implements ProductService {
         Integer page = query.getPage();
         int pageNumber = (page == null || page < 0) ? 0 : page - 1;
        try{
-           SortFilter sortFilter = new SortFilter(query.getSortBy(), query.getSortType().name());
+           SortFilter sortFilter = new SortFilter(query.getSortBy(),
+                   query.getSortType() == null ? null : query.getSortType().name());
            PageRequest pageRequest = PageRequest.of(pageNumber, query.getLimit(), sortFilter.getSortType());
 
            Page<ProductEntity> productEntities  = this.productRepository.findAll(

@@ -36,6 +36,13 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findById(id);
     }
 
+    @Override
+    public UserEntity findByEmail(String email) {
+        return this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("user not found by email"));
+    }
+
+
 
     @Override
     public ListEntityResponse<UserResponseDto> findAll(String name, Integer page, Integer limit, String sortBy, String sortType) {
