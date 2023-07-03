@@ -33,9 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryEntity> findAll(String search) {
-        return this.categoryRepository.findByCategorySearchName(
-                search == null ? "" : search
-        );
+        return this.categoryRepository.findByCategorySearchName(search == null ? "" : search);
     }
 
 
@@ -53,10 +51,39 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    @Override
+    public CategoryEntity update(Long id, CreateCategoryDto createCategoryDto) {
+//      validate id
+        this.isEntityExists(id);
+
+        CategoryEntity category = new CategoryEntity();
+        categoryEntityAndCategoryRequestDtoMapper.map(createCategoryDto, category);
+        category.setId(id);
+
+        try {
+            CategoryEntity updated = this.categoryRepository.save(category);
+            log.info("update a category by id#" + updated.getId());
+            return updated;
+        } catch (Exception ex) {
+            throw new CatchException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public CategoryEntity delete(Long id) {
+        try{
+            CategoryEntity category = this.isEntityExists(id);
+            this.categoryRepository.delete(category);
+            log.info("delete a category by id#" + id);
+            return category;
+        }catch (Exception ex){
+            throw new CatchException(ex.getMessage());
+        }
+    }
+
 
     @Override
     public CategoryEntity isEntityExists(Long id) {
-        return this.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("category not found by id#" + id));
+        return this.findById(id).orElseThrow(() -> new ResourceNotFoundException("category not found by id#" + id));
     }
 }

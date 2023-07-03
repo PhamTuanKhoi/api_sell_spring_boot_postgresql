@@ -29,7 +29,6 @@ public class UserInterceptor implements HandlerInterceptor {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (authHeader == null || authHeader.isEmpty()){
-System.out.println(9899);
             return this.removeAttribute(request);
         }
 

@@ -25,4 +25,16 @@ public class CategoryController {
     public ResponseEntity<CategoryEntity> create(@Valid @RequestBody CreateCategoryDto createCategoryDto){
         return ResponseEntity.ok(this.categoryService.create(createCategoryDto));
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<CategoryEntity> update(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody CreateCategoryDto createCategoryDto){
+        return ResponseEntity.ok(this.categoryService.update(id,createCategoryDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public  CategoryEntity delete(@PathVariable("id") Long id){
+        return this.categoryService.delete(id);
+    }
 }

@@ -16,4 +16,5 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long>,
 
     @Query("SELECT c FROM category c WHERE c.name LIKE %:search%")
     List<CategoryEntity> findByCategorySearchName(@Param("search") String search);
+
 }
