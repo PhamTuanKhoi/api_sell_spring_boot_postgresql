@@ -14,6 +14,7 @@ import java.util.List;
 public class ListEntityResponse<T> {
     private List<T> entities;
     private Long count;
+    private Long total;
     private Integer limit;
     private Integer page;
 

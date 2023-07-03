@@ -43,6 +43,7 @@ public class JwtService {
 
     public Boolean validateToken(String token){
         try {
+//            System.out.println("tokrn  " + token);
             Jwts.parser().setSigningKey(getSignInKey()).parseClaimsJws(token);
             return true;
         }catch (MalformedJwtException ex) {

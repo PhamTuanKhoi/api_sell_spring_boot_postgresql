@@ -38,8 +38,11 @@ public class ProductServiceImpl implements ProductService {
            Page<ProductEntity> productEntities  = this.productRepository.findAll(
                    ProductSpecification.filter(query.getName(), query.getCategoryIds()), pageRequest
            );
-           return new ListEntityResponse<ProductEntity>(productEntities.getContent(),
-                   (long) productEntities.getTotalElements(), query.getLimit(),pageNumber + 1);
+           return new ListEntityResponse<ProductEntity>(
+                   productEntities.getContent(),
+                   productEntities.getTotalElements(),
+                   (long) productRepository.findAll().size(),
+                   query.getLimit(),pageNumber + 1);
        }catch (Exception ex){
            throw new CatchException(ex.getMessage());
        }

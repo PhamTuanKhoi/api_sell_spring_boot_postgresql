@@ -28,21 +28,33 @@ public class UserInterceptor implements HandlerInterceptor {
             throws Exception {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (!(StringUtils.hasText(authHeader) || (authHeader.startsWith("Bearer ")))) return true;
+        if (authHeader == null || authHeader.isEmpty()){
+System.out.println(9899);
+            return this.removeAttribute(request);
+        }
 
         String jwt = authHeader.substring(7);
 
-        if (jwt.isEmpty() && !jwtService.validateToken(jwt)) return true;
+        if (jwt.isEmpty() && !jwtService.validateToken(jwt))
+            return this.removeAttribute(request);
 
         try {
             String email = jwtService.getUserEmailFromJwt(jwt);
             UserEntity user = userService.findByEmail(email);
 
             request.setAttribute("userId", user.getId());
+            request.setAttribute("user", user);
         } catch (Exception ex) {
             log.error("Interceptor my write error: " + ex);
         }
 
+
+        return true;
+    }
+
+    public boolean removeAttribute(HttpServletRequest request){
+        request.removeAttribute("userId");
+        request.removeAttribute("user");
 
         return true;
     }

@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
         Long count = entityPage.getTotalElements();
 
-        return new ListEntityResponse<UserResponseDto>(entities, count, limit, page);
+        return new ListEntityResponse<UserResponseDto>(entities, count, 2L, limit, page);
     }
 
 

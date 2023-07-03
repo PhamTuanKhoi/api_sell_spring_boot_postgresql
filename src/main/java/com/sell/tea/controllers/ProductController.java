@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/product")
+@RequestMapping("/api/product/")
 public class ProductController {
 
     private final ProductServiceImpl productService;
+
 
     @GetMapping
     public ListEntityResponse<ProductEntity> findAll(
