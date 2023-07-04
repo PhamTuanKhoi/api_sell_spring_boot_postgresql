@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -34,4 +37,9 @@ public class ProductEntity {
             foreignKey = @ForeignKey(name = "CATEGORY_ID_FK")
     )
     private CategoryEntity category;
+
+    @OneToMany(mappedBy = "product")
+    private List<CartEntity> cartEntities = new ArrayList<>();
+
+
 }
