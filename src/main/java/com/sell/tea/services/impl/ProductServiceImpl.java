@@ -1,5 +1,7 @@
 package com.sell.tea.services.impl;
 
+import com.sell.tea.dtos.request.product.UpdateProductDto; 
+import com.sell.tea.exceptions.ResourceNotFoundException;
 import com.sell.tea.gobal.types.SortFilter;
 import com.sell.tea.dtos.request.product.CreateProductDto;
 import com.sell.tea.dtos.request.product.QueryProductDto;
@@ -61,5 +63,29 @@ public class ProductServiceImpl implements ProductService {
         }catch (Exception ex){
             throw new CatchException(ex.getMessage());
         }
+    }
+
+    @Override
+    public ProductEntity update(Long id, UpdateProductDto updateProductDto){
+        ProductEntity productEntity =  this.isEntityExist(id);
+        System.out.println("111 = " + productEntity.getName());
+        productEntityAndProductRequestDtoMapper.map(updateProductDto, productEntity);
+
+        try{
+            System.out.println("999 = " + productEntity.getName());
+
+            ProductEntity updated = this.productRepository.save(productEntity);
+            System.out.println("222 = " + 122);
+            log.info("updated a product by id#" + updated.getId());
+            return  updated;
+        }catch (Exception ex){
+            throw new CatchException(ex.getMessage());
+        }
+    }
+
+    public ProductEntity isEntityExist(Long id){
+       return this.productRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("product not found by id#" + id));
+
     }
 }
