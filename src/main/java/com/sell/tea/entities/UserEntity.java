@@ -2,8 +2,14 @@ package com.sell.tea.entities;
 
 
 import com.sell.tea.entities.enums.Role;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,12 +43,15 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<CartEntity> cartEntities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<OrderEntity> orderEntities = new ArrayList<>();
 
-//    ------------------------------------ details ------------------------------------
-@Override
-public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority("ROLE_" + (role == null ? "USER" : role.name())));
-}
+
+    //    ------------------------------------ details ------------------------------------
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + (role == null ? "USER" : role.name())));
+    }
 
     @Override
     public String getPassword() {

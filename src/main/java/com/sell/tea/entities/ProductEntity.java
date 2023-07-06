@@ -41,5 +41,6 @@ public class ProductEntity {
     @OneToMany(mappedBy = "product")
     private List<CartEntity> cartEntities = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "product")
+    private List<OrderItemEntity> orderItemEntities = new ArrayList<>();
 }
