@@ -68,14 +68,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductEntity update(Long id, UpdateProductDto updateProductDto){
         ProductEntity productEntity =  this.isEntityExist(id);
-        System.out.println("111 = " + productEntity.getName());
         productEntityAndProductRequestDtoMapper.map(updateProductDto, productEntity);
-
         try{
-            System.out.println("999 = " + productEntity.getName());
-
             ProductEntity updated = this.productRepository.save(productEntity);
-            System.out.println("222 = " + 122);
             log.info("updated a product by id#" + updated.getId());
             return  updated;
         }catch (Exception ex){
