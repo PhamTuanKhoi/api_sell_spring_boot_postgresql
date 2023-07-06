@@ -25,7 +25,7 @@ public class CartController {
     }
 
     @GetMapping("/{id}")
-    public CartEntity findById(@PathVariable("id") Long id) {
+    public CartResponseDto findById(@PathVariable("id") Long id) {
         return this.cartService.findById(id);
     }
 
@@ -46,5 +46,11 @@ public class CartController {
             @PathVariable("id") Long id,
             @RequestBody UpdateCartDto updateCartDto) {
         return ResponseEntity.ok(this.cartService.update(id, updateCartDto));
+    }
+
+
+    @DeleteMapping("/{id}")
+    public CartResponseDto delete(@PathVariable("id") Long id){
+        return this.cartService.delete(id);
     }
 }

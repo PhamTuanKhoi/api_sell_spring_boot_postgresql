@@ -9,9 +9,13 @@ import java.util.List;
 public interface CartSerVice {
     List<CartResponseDto> findAll();
 
-    CartEntity findById(Long id);
+    CartResponseDto findById(Long id);
 
     CartResponseDto create(UpdateCartDto createCartDto);
 
     CartResponseDto update(Long id, UpdateCartDto createCartDto);
+
+    CartResponseDto delete(Long id);
+
+    CartEntity isEntityExist(Long id);
 }

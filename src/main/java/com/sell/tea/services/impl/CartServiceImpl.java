@@ -35,8 +35,9 @@ public class CartServiceImpl implements CartSerVice {
     }
 
     @Override
-    public CartEntity findById(Long id) {
+    public CartResponseDto findById(Long id) {
         return this.cartRepository.findById(id)
+                .map(item -> modelMapper.map(item, CartResponseDto.class))
                 .orElseThrow(() -> new ResourceNotFoundException("cart not found by id#" + id));
     }
 
@@ -60,7 +61,7 @@ public class CartServiceImpl implements CartSerVice {
 
     @Override
     public CartResponseDto update(Long id, UpdateCartDto updateCartDto) {
-        CartEntity cartEntity = this.findById(id);
+        CartEntity cartEntity = this.isEntityExist(id);
         cartEntityAndCartRequestDtoMapper.map(updateCartDto, cartEntity);
 
         try {
@@ -73,5 +74,24 @@ public class CartServiceImpl implements CartSerVice {
         } catch (Exception ex) {
             throw new CatchException(ex.getMessage());
         }
+    }
+
+    @Override
+    public CartResponseDto delete(Long id) {
+        CartEntity cartEntity = this.isEntityExist(id);
+        try {
+            this.cartRepository.delete(cartEntity);
+            log.info("deleted a cart by id#" + id);
+            CartResponseDto cartResponseDto = this.modelMapper.map(cartEntity, CartResponseDto.class);
+            return cartResponseDto;
+        } catch (Exception ex) {
+            throw new CatchException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public  CartEntity isEntityExist(Long id){
+        return this.cartRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("cart not found by id#" + id));
     }
 }
