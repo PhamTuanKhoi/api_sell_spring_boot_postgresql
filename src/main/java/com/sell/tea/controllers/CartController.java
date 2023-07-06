@@ -20,8 +20,13 @@ public class CartController {
     private final CartServiceImpl cartService;
 
     @GetMapping
-    public ResponseEntity<List<CartEntity>> findAll() {
+    public ResponseEntity<List<CartResponseDto>> findAll() {
         return ResponseEntity.ok(this.cartService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public CartEntity findById(@PathVariable("id") Long id) {
+        return this.cartService.findById(id);
     }
 
     @PostMapping
@@ -36,8 +41,10 @@ public class CartController {
         return ResponseEntity.ok(this.cartService.create(createCartDto));
     }
 
-    @PatchMapping
-    public ResponseEntity<CartEntity> update(@RequestBody UpdateCartDto createCartDto) {
-        return ResponseEntity.ok(this.cartService.update(createCartDto));
+    @PatchMapping("/{id}")
+    public ResponseEntity<CartResponseDto> update(
+            @PathVariable("id") Long id,
+            @RequestBody UpdateCartDto updateCartDto) {
+        return ResponseEntity.ok(this.cartService.update(id, updateCartDto));
     }
 }

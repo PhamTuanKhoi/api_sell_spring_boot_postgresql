@@ -7,9 +7,11 @@ import com.sell.tea.entities.CartEntity;
 import java.util.List;
 
 public interface CartSerVice {
-    List<CartEntity> findAll();
+    List<CartResponseDto> findAll();
+
+    CartEntity findById(Long id);
 
     CartResponseDto create(UpdateCartDto createCartDto);
 
-    CartEntity update(UpdateCartDto createCartDto);
+    CartResponseDto update(Long id, UpdateCartDto createCartDto);
 }

@@ -4,6 +4,7 @@ import com.sell.tea.dtos.request.cart.UpdateCartDto;
 import com.sell.tea.dtos.response.CartResponseDto;
 import com.sell.tea.entities.CartEntity;
 import com.sell.tea.exceptions.CatchException;
+import com.sell.tea.exceptions.ResourceNotFoundException;
 import com.sell.tea.map.CartEntityAndCartRequestDtoMapper;
 import com.sell.tea.repositories.CartRepository;
 import com.sell.tea.services.CartSerVice;
@@ -13,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -25,9 +27,19 @@ public class CartServiceImpl implements CartSerVice {
     private final ModelMapper modelMapper;
 
     @Override
-    public List<CartEntity> findAll() {
-        return this.cartRepository.findAll();
+    public List<CartResponseDto> findAll() {
+        return this.cartRepository.findAll()
+                .stream()
+                .map(cart -> modelMapper.map(cart, CartResponseDto.class))
+                .collect(Collectors.toList());
     }
+
+    @Override
+    public CartEntity findById(Long id) {
+        return this.cartRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("cart not found by id#" + id));
+    }
+
 
     @Override
     public CartResponseDto create(UpdateCartDto createCartDto) {
@@ -47,8 +59,19 @@ public class CartServiceImpl implements CartSerVice {
     }
 
     @Override
-    public CartEntity update(UpdateCartDto createCartDto) {
-        CartEntity cartEntity = new CartEntity();
-        return cartEntity;
+    public CartResponseDto update(Long id, UpdateCartDto updateCartDto) {
+        CartEntity cartEntity = this.findById(id);
+        cartEntityAndCartRequestDtoMapper.map(updateCartDto, cartEntity);
+
+        try {
+            CartEntity cart = this.cartRepository.save(cartEntity);
+            log.info("updated a cart by id#" + cart.getId());
+
+            CartResponseDto cartResponseDto = new CartResponseDto();
+            modelMapper.map(cart, cartResponseDto);
+            return cartResponseDto;
+        } catch (Exception ex) {
+            throw new CatchException(ex.getMessage());
+        }
     }
 }
