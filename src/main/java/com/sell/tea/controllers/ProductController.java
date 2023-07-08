@@ -5,6 +5,7 @@ import com.sell.tea.dtos.request.product.CreateProductDto;
 import com.sell.tea.dtos.request.product.QueryProductDto;
 import com.sell.tea.dtos.request.product.UpdateProductDto;
 import com.sell.tea.dtos.response.ListEntityResponse;
+import com.sell.tea.dtos.response.ProductResponseDto;
 import com.sell.tea.entities.ProductEntity;
 import com.sell.tea.gobal.dtos.UserAttributeDto;
 import com.sell.tea.services.impl.ProductServiceImpl;
@@ -22,7 +23,7 @@ public class ProductController {
 
 
     @GetMapping
-    public ListEntityResponse<ProductEntity> findAll(
+    public ListEntityResponse<ProductResponseDto> findAll(
             @ModelAttribute("queryProductDto") QueryProductDto queryProductDto
     ) {
         return this.productService.findAll(queryProductDto);

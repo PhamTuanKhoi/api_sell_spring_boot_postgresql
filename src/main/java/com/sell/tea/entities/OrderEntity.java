@@ -1,5 +1,8 @@
 package com.sell.tea.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.sell.tea.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,18 +18,24 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "orders")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Double totalPrice;
 
-    private String status;
+    //    @Column(columnDefinition = "varchar(32) default 'ORDER'")
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @ManyToOne
     @JoinColumn(name = "user_id",
-            foreignKey = @ForeignKey(name = "USER_ID_FK")
+            foreignKey = @ForeignKey(name = "USER_ID_FK"),
+            nullable = false
     )
     private UserEntity user;
 

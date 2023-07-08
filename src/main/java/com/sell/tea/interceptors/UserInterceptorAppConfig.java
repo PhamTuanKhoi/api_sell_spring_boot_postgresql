@@ -14,6 +14,7 @@ public class UserInterceptorAppConfig implements WebMvcConfigurer {
         registry.addInterceptor(userInterceptor)
                 .addPathPatterns("/api/product/")
                 .addPathPatterns("/api/auth/current-user")
-                .addPathPatterns("/api/cart");
+                .addPathPatterns("/api/cart")
+                .addPathPatterns("/api/order");
     }
 }

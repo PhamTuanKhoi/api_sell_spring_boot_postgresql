@@ -14,5 +14,5 @@ import java.util.List;
 public class CategoryResponseDto {
     private Long id;
     private String name;
-    private List<ProductEntity> products;
+//    private List<ProductEntity> products;
 }
