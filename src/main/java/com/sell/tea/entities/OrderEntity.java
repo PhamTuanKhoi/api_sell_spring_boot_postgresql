@@ -1,5 +1,6 @@
 package com.sell.tea.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sell.tea.entities.enums.OrderStatus;
@@ -18,7 +19,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "orders")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,4 +42,11 @@ public class OrderEntity {
 
     @OneToMany(mappedBy = "order")
     private List<OrderItemEntity> orderItemEntities = new ArrayList<>();
+
+//    @PreRemove
+//    public void preRemove(){
+//        orderItemEntities.forEach(item -> {
+//            item.setOrder(null);
+//        });
+//    }
 }

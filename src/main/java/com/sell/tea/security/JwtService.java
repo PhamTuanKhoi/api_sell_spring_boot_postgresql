@@ -1,6 +1,5 @@
 package com.sell.tea.security;
 
-import com.sell.tea.security.impl.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
